@@ -23,6 +23,8 @@ FocusBoard is a responsive frontend task dashboard built for the trainee assignm
 - `localStorage` persistence under `focusboard_tasks`
 - Responsive desktop, tablet, and mobile layouts
 - Semantic controls, labels, focus states, and accessible dialogs
+- Working sidebar navigation for Dashboard, My Tasks, Calendar, Filters, Help Center, and Settings
+- Notifications and profile popovers in the dashboard header
 
 ## State management
 
@@ -57,5 +59,4 @@ npm run preview
 - GitHub repository: _Add the public repository URL here_
 
 ## Known limitations
-
-The sidebar's Calendar, Filters, Help Center, and Settings items are visual placeholders. Calendar and settings screens are outside the stated assessment scope. Browser persistence is local to the current origin and browser profile.
+Browser persistence is local to the current origin and browser profile.

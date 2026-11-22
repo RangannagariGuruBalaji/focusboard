@@ -27,6 +27,8 @@ button { border: 0; }
 .nav-item b { margin-left:auto; min-width:24px; height:22px; display:grid; place-items:center; border-radius:11px; background:#eceaf6; color:#777387; font-size:12px; }
 .sidebar-bottom { margin-top:auto; padding: 12px; border-top:1px solid #f0f0f4; }
 .profile { display:flex; align-items:center; gap:9px; border-top:1px solid #f0f0f4; margin-top:9px; padding:16px 7px 4px; }
+.profile-button { width:100%; display:flex; align-items:center; gap:9px; background:transparent; color:inherit; text-align:left; padding:0; }
+.profile-button div:nth-child(2) { min-width:0; flex:1; display:flex; flex-direction:column; }
 .avatar, .top-avatar { border-radius:50%; background:#2e2d3a; color:white; display:grid; place-items:center; font-weight:700; }
 .avatar { width:38px; height:38px; font-size:12px; }
 .profile div:nth-child(2) { min-width:0; flex:1; display:flex; flex-direction:column; }
@@ -40,6 +42,23 @@ button { border: 0; }
 .breadcrumbs b { color:#d2d0d8; }
 .breadcrumbs strong { color:#454552; }
 .top-actions { display:flex; align-items:center; gap:12px; }
+.header-popover-anchor { position:relative; }
+.header-popover { position:absolute; z-index:50; top:48px; right:0; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 16px 40px rgba(38,36,54,.14); }
+.notification-popover { width:310px; padding:8px; }
+.popover-heading { height:42px; display:flex; align-items:center; justify-content:space-between; padding:0 8px; font-size:13px; }
+.popover-heading button { background:transparent; color:#6656d8; font-size:11px; }
+.notification-item { display:flex; align-items:flex-start; gap:10px; padding:10px 8px; border-top:1px solid #f1f1f5; }
+.notification-item div:last-child { display:flex; flex-direction:column; }
+.notification-item strong { font-size:12px; }
+.notification-item span { color:#92909d; font-size:10px; margin-top:3px; }
+.notification-dot { width:8px; height:8px; border-radius:50%; margin-top:4px; flex:none; }
+.notification-dot.purple { background:#7565dc; }
+.notification-dot.orange { background:#dc9464; }
+.notification-dot.green { background:#69ad9a; }
+.profile-popover { width:220px; display:flex; flex-direction:column; padding:14px; }
+.profile-popover > strong { font-size:13px; }
+.profile-popover > span { color:#92909d; font-size:11px; margin:3px 0 10px; }
+.profile-popover button { height:38px; border-radius:8px; background:#f6f5fb; color:#6253cf; display:flex; align-items:center; gap:8px; padding:0 10px; font-size:12px; }
 .icon-button { width:38px; height:38px; border-radius:9px; background:#fff; border:1px solid var(--border); display:grid; place-items:center; color:#747280; }
 .notification { position:relative; }
 .notification i { position:absolute; width:6px; height:6px; border-radius:50%; background:#ef6e68; right:8px; top:7px; border:1px solid #fff; }
@@ -140,6 +159,21 @@ button { border: 0; }
 .danger-icon { width:44px; height:44px; margin:0 auto 12px; border-radius:50%; display:grid; place-items:center; background:#fff0f0; color:#d85e5e; }
 .confirm-modal p { color:#858391; font-size:13px; margin:8px 0 0; }
 .confirm-modal .modal-actions { justify-content:center; }
+.utility-modal { width:min(520px,100%); max-height:calc(100vh - 40px); overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 70px rgba(31,29,46,.22); padding:24px; }
+.calendar-list { display:flex; flex-direction:column; gap:8px; }
+.calendar-list button { min-height:64px; width:100%; border:1px solid #ebeaf1; border-radius:10px; background:#fff; display:grid; grid-template-columns:105px 1fr 20px; align-items:center; gap:10px; text-align:left; padding:10px 12px; color:#55535f; }
+.calendar-list button:hover { border-color:#ccc6ee; background:#faf9ff; }
+.calendar-list time { color:#6656d8; font-size:11px; font-weight:750; }
+.calendar-list div { display:flex; flex-direction:column; min-width:0; }
+.calendar-list strong { font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.calendar-list span { color:#9694a1; font-size:10px; margin-top:4px; }
+.help-content { color:#686675; font-size:13px; line-height:1.7; }
+.help-content p { margin:0 0 10px; }
+.settings-content { display:flex; flex-direction:column; gap:18px; }
+.settings-content > div { display:flex; flex-direction:column; border:1px solid #ebeaf1; border-radius:10px; padding:12px; }
+.settings-content strong { font-size:12px; }
+.settings-content span { color:#9694a1; font-size:11px; margin-top:4px; }
+.settings-content .button { align-self:flex-start; }
 
 @media (max-width: 1100px) {
   .sidebar { width:200px; }

@@ -40,6 +40,11 @@ export default function App() {
   const [formOpen, setFormOpen] = useState(false)
   const [deleteTask, setDeleteTask] = useState(null)
   const [mobileMenu, setMobileMenu] = useState(false)
+  const [activeNav, setActiveNav] = useState('Dashboard')
+  const [notificationOpen, setNotificationOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [notificationsRead, setNotificationsRead] = useState(false)
+  const [utilityPanel, setUtilityPanel] = useState(null)
 
   const stats = useMemo(() => {
     const total = tasks.length
@@ -88,6 +93,32 @@ export default function App() {
     setSlide((current) => (current + direction + focusSlides.length) % focusSlides.length)
   }
 
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function navigateTo(name) {
+    setActiveNav(name)
+    setMobileMenu(false)
+    setProfileOpen(false)
+    setNotificationOpen(false)
+
+    if (name === 'Dashboard') {
+      scrollToTop()
+    } else if (name === 'My Tasks') {
+      document.querySelector('.task-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else if (name === 'Filters') {
+      document.querySelector('.task-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      window.setTimeout(() => document.querySelector('#priority-filter')?.focus(), 350)
+    } else if (name === 'Calendar') {
+      setUtilityPanel('calendar')
+    } else if (name === 'Help Center') {
+      setUtilityPanel('help')
+    } else if (name === 'Settings') {
+      setUtilityPanel('settings')
+    }
+  }
+
   const currentSlide = focusSlides[slide]
 
   return (
@@ -99,18 +130,20 @@ export default function App() {
           <button className="mobile-close" type="button" onClick={() => setMobileMenu(false)} aria-label="Close navigation"><X size={20} /></button>
         </div>
         <nav className="primary-nav" aria-label="Main navigation">
-          <button className="nav-item active" type="button"><LayoutDashboard size={19} /><span>Dashboard</span></button>
-          <button className="nav-item" type="button" onClick={() => document.querySelector('.task-section')?.scrollIntoView({ behavior: 'smooth' })}><CheckCircle2 size={19} /><span>My Tasks</span><b>{tasks.length}</b></button>
-          <button className="nav-item" type="button"><CalendarDays size={19} /><span>Calendar</span></button>
-          <button className="nav-item" type="button"><SlidersHorizontal size={19} /><span>Filters</span></button>
+          <button className={`nav-item ${activeNav === 'Dashboard' ? 'active' : ''}`} type="button" onClick={() => navigateTo('Dashboard')}><LayoutDashboard size={19} /><span>Dashboard</span></button>
+          <button className={`nav-item ${activeNav === 'My Tasks' ? 'active' : ''}`} type="button" onClick={() => navigateTo('My Tasks')}><CheckCircle2 size={19} /><span>My Tasks</span><b>{tasks.length}</b></button>
+          <button className={`nav-item ${activeNav === 'Calendar' ? 'active' : ''}`} type="button" onClick={() => navigateTo('Calendar')}><CalendarDays size={19} /><span>Calendar</span></button>
+          <button className={`nav-item ${activeNav === 'Filters' ? 'active' : ''}`} type="button" onClick={() => navigateTo('Filters')}><SlidersHorizontal size={19} /><span>Filters</span></button>
         </nav>
         <div className="sidebar-bottom">
-          <button className="nav-item" type="button"><CircleHelp size={19} /><span>Help Center</span></button>
-          <button className="nav-item" type="button"><Settings size={19} /><span>Settings</span></button>
+          <button className={`nav-item ${activeNav === 'Help Center' ? 'active' : ''}`} type="button" onClick={() => navigateTo('Help Center')}><CircleHelp size={19} /><span>Help Center</span></button>
+          <button className={`nav-item ${activeNav === 'Settings' ? 'active' : ''}`} type="button" onClick={() => navigateTo('Settings')}><Settings size={19} /><span>Settings</span></button>
           <div className="profile">
-            <div className="avatar">AM</div>
-            <div><strong>Alex Morgan</strong><span>alex@example.com</span></div>
-            <MoreHorizontal size={18} />
+            <button className="profile-button" type="button" onClick={() => setProfileOpen((open) => !open)} aria-expanded={profileOpen} aria-label="Open profile menu">
+              <div className="avatar">AM</div>
+              <div><strong>Alex Morgan</strong><span>alex@example.com</span></div>
+              <MoreHorizontal size={18} />
+            </button>
           </div>
         </div>
       </aside>
@@ -119,10 +152,31 @@ export default function App() {
       <main className="main-content">
         <header className="topbar">
           <button className="menu-button" type="button" onClick={() => setMobileMenu(true)} aria-label="Open navigation"><Menu size={22} /></button>
-          <div className="breadcrumbs"><span>Workspace</span><b>/</b><strong>Dashboard</strong></div>
+          <div className="breadcrumbs"><span>Workspace</span><b>/</b><strong>{activeNav}</strong></div>
           <div className="top-actions">
-            <button className="icon-button notification" type="button" aria-label="Notifications"><Bell size={19} /><i /></button>
-            <button className="top-avatar" type="button" aria-label="Open profile">AM</button>
+            <div className="header-popover-anchor">
+              <button className="icon-button notification" type="button" aria-label="Notifications" aria-expanded={notificationOpen} onClick={() => { setNotificationOpen((open) => !open); setProfileOpen(false) }}>
+                <Bell size={19} />{!notificationsRead && <i />}
+              </button>
+              {notificationOpen && (
+                <div className="header-popover notification-popover" role="dialog" aria-label="Notifications">
+                  <div className="popover-heading"><strong>Notifications</strong><button type="button" onClick={() => setNotificationsRead(true)}>Mark all read</button></div>
+                  <div className="notification-item"><div className="notification-dot purple" /><div><strong>{stats.completed} tasks completed</strong><span>Your dashboard is up to date</span></div></div>
+                  <div className="notification-item"><div className="notification-dot orange" /><div><strong>{stats.inProgress} tasks in progress</strong><span>Keep the momentum going</span></div></div>
+                  <div className="notification-item"><div className="notification-dot green" /><div><strong>{tasks.length} total tasks</strong><span>Synced to this browser</span></div></div>
+                </div>
+              )}
+            </div>
+            <div className="header-popover-anchor">
+              <button className="top-avatar" type="button" aria-label="Open profile" aria-expanded={profileOpen} onClick={() => { setProfileOpen((open) => !open); setNotificationOpen(false) }}>AM</button>
+              {profileOpen && (
+                <div className="header-popover profile-popover" role="menu" aria-label="Profile menu">
+                  <strong>Alex Morgan</strong>
+                  <span>alex@example.com</span>
+                  <button type="button" role="menuitem" onClick={() => navigateTo('Settings')}><Settings size={15} />Account settings</button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -226,6 +280,43 @@ export default function App() {
       </main>
 
       {formOpen && <TaskForm task={formTask} onSubmit={saveTask} onClose={() => setFormOpen(false)} />}
+      {utilityPanel && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setUtilityPanel(null)}>
+          <div className="utility-modal" role="dialog" aria-modal="true" aria-labelledby="utility-title">
+            <div className="modal-header">
+              <div>
+                <span className="eyebrow">{utilityPanel === 'calendar' ? 'TASK CALENDAR' : utilityPanel === 'settings' ? 'APP SETTINGS' : 'SUPPORT'}</span>
+                <h2 id="utility-title">{utilityPanel === 'calendar' ? 'Upcoming tasks' : utilityPanel === 'settings' ? 'Settings' : 'Help Center'}</h2>
+              </div>
+              <button className="icon-button" type="button" onClick={() => setUtilityPanel(null)} aria-label="Close panel"><X size={20} /></button>
+            </div>
+            {utilityPanel === 'calendar' && (
+              <div className="calendar-list">
+                {[...tasks].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map((task) => (
+                  <button key={task.id} type="button" onClick={() => { setUtilityPanel(null); openEdit(task) }}>
+                    <time dateTime={task.dueDate}>{formatDate(task.dueDate)}</time>
+                    <div><strong>{task.title}</strong><span>{task.status} · {task.priority} priority</span></div>
+                    <ChevronRight size={16} />
+                  </button>
+                ))}
+              </div>
+            )}
+            {utilityPanel === 'help' && (
+              <div className="help-content">
+                <p>Use <strong>Add task</strong> to create work, and use each task row to edit, delete, or update status.</p>
+                <p>Search by title, combine status tabs with the priority filter, or reset filters from an empty result.</p>
+                <p>Task changes are saved automatically in this browser.</p>
+              </div>
+            )}
+            {utilityPanel === 'settings' && (
+              <div className="settings-content">
+                <div><strong>Local task storage</strong><span>Tasks are saved automatically in this browser.</span></div>
+                <button className="button secondary" type="button" onClick={() => { setTasks(sampleTasks); resetFilters(); setUtilityPanel(null) }}>Restore sample tasks</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       {deleteTask && (
         <div className="modal-backdrop" role="presentation">
           <div className="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="delete-title">
