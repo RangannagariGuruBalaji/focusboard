@@ -77,15 +77,16 @@ npm run lint
 
 ## Submission links
 
-- Hosted URL: **Pending deployment** (the assignment requires a publicly accessible HTTPS URL)
-- GitHub repository: **Pending publication** (the assignment requires a public repository)
+- Hosted application: [FocusBoard](https://focusboard-2cnc6bvf7-balaji7.vercel.app) (the provided deployment URL redirected to Vercel login when checked)
+- Vercel project: [Deployment dashboard](https://vercel.com/balaji7/focusboard/GbdgbiJdFxwdvHD66S3RULBZwESD)
+- GitHub repository: [RangannagariGuruBalaji/focusboard](https://github.com/RangannagariGuruBalaji/focusboard)
 
 ## Submission checklist
 
-- [ ] Deploy the app and add its public HTTPS URL above.
-- [ ] Push the source and version history to a public GitHub repository and add its URL above.
+- [ ] Confirm the app URL is publicly accessible without a Vercel login.
+- [x] Push the source and version history to a public GitHub repository and add its URL above.
 - [x] Include this README, `AI_USAGE.md`, and desktop/mobile screenshots.
-- [ ] Add final live URLs to the submission template after publishing.
+- [x] Record final live app and source URLs above.
 
 ## Additional UI and limitations
 
