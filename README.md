@@ -77,8 +77,7 @@ npm run lint
 
 ## Submission links
 
-- Hosted application: [FocusBoard](https://focusboard-2cnc6bvf7-balaji7.vercel.app) (the provided deployment URL redirected to Vercel login when checked)
-- Vercel project: [Deployment dashboard](https://vercel.com/balaji7/focusboard/GbdgbiJdFxwdvHD66S3RULBZwESD)
+- Hosted application: [FocusBoard](https://focusboard-balaji7.vercel.app/)
 - GitHub repository: [RangannagariGuruBalaji/focusboard](https://github.com/RangannagariGuruBalaji/focusboard)
 
 ## Submission checklist
