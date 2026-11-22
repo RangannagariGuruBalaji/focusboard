@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Bell, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, CircleHelp,
   Clock3, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, Settings,
@@ -45,6 +45,29 @@ export default function App() {
   const [profileOpen, setProfileOpen] = useState(false)
   const [notificationsRead, setNotificationsRead] = useState(false)
   const [utilityPanel, setUtilityPanel] = useState(null)
+
+  useEffect(() => {
+    function handleEscape(event) {
+      if (event.key !== 'Escape') return
+      if (formOpen) setFormOpen(false)
+      else if (deleteTask) setDeleteTask(null)
+      else if (utilityPanel) setUtilityPanel(null)
+      else if (notificationOpen) setNotificationOpen(false)
+      else if (profileOpen) setProfileOpen(false)
+      else if (mobileMenu) setMobileMenu(false)
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [formOpen, deleteTask, utilityPanel, notificationOpen, profileOpen, mobileMenu])
+
+  useEffect(() => {
+    const modalOpen = formOpen || deleteTask || utilityPanel
+    document.body.style.overflow = modalOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [formOpen, deleteTask, utilityPanel])
 
   const stats = useMemo(() => {
     const total = tasks.length
@@ -234,13 +257,13 @@ export default function App() {
             </div>
             <div className="status-tabs" role="tablist" aria-label="Filter tasks by status">
               {statusOptions.map((status) => (
-                <button key={status} role="tab" aria-selected={statusFilter === status} className={statusFilter === status ? 'active' : ''} type="button" onClick={() => setStatusFilter(status)}>
+                <button key={status} id={`status-tab-${status.toLowerCase().replaceAll(' ', '-')}`} role="tab" aria-controls="task-results" aria-selected={statusFilter === status} className={statusFilter === status ? 'active' : ''} type="button" onClick={() => setStatusFilter(status)}>
                   {status}<span>{status === 'All' ? tasks.length : tasks.filter((task) => task.status === status).length}</span>
                 </button>
               ))}
             </div>
 
-            <div className="task-list">
+            <div className="task-list" id="task-results" role="tabpanel" aria-label={`${statusFilter} tasks`}>
               {visibleTasks.length ? visibleTasks.map((task) => (
                 <article className="task-row" key={task.id}>
                   <button className={`task-check ${task.status === 'Completed' ? 'done' : ''}`} type="button" onClick={() => updateStatus(task.id, task.status === 'Completed' ? 'To do' : 'Completed')} aria-label={`${task.status === 'Completed' ? 'Mark incomplete' : 'Mark complete'}: ${task.title}`}>

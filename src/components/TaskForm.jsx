@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 
 const emptyTask = {
@@ -11,13 +11,8 @@ const emptyTask = {
 }
 
 export default function TaskForm({ task, onSubmit, onClose }) {
-  const [form, setForm] = useState(emptyTask)
+  const [form, setForm] = useState(task ? { ...task } : emptyTask)
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    setForm(task ? { ...task } : emptyTask)
-    setError('')
-  }, [task])
 
   function updateField(event) {
     const { name, value } = event.target
@@ -28,10 +23,6 @@ export default function TaskForm({ task, onSubmit, onClose }) {
     event.preventDefault()
     if (!form.title.trim()) {
       setError('Please enter a task title.')
-      return
-    }
-    if (!form.dueDate) {
-      setError('Please choose a due date.')
       return
     }
     onSubmit({ ...form, title: form.title.trim(), description: form.description.trim() })
@@ -51,7 +42,16 @@ export default function TaskForm({ task, onSubmit, onClose }) {
         </div>
         <form onSubmit={handleSubmit} noValidate>
           <label htmlFor="title">Task title <span>*</span></label>
-          <input id="title" name="title" value={form.title} onChange={updateField} placeholder="Enter task title" autoFocus />
+          <input
+            id="title"
+            name="title"
+            value={form.title}
+            onChange={updateField}
+            placeholder="Enter task title"
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'task-form-error' : undefined}
+            autoFocus
+          />
 
           <label htmlFor="description">Description</label>
           <textarea id="description" name="description" value={form.description} onChange={updateField} placeholder="Add a short description" rows="3" />
@@ -85,11 +85,11 @@ export default function TaskForm({ task, onSubmit, onClose }) {
               </select>
             </div>
             <div>
-              <label htmlFor="dueDate">Due date <span>*</span></label>
+              <label htmlFor="dueDate">Due date</label>
               <input id="dueDate" name="dueDate" type="date" value={form.dueDate} onChange={updateField} />
             </div>
           </div>
-          {error && <p className="form-error" role="alert">{error}</p>}
+          {error && <p className="form-error" id="task-form-error" role="alert">{error}</p>}
           <div className="modal-actions">
             <button className="button secondary" type="button" onClick={onClose}>Cancel</button>
             <button className="button primary" type="submit">{task ? 'Save changes' : 'Create task'}</button>

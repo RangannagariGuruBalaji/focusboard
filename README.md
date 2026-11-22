@@ -13,7 +13,7 @@ FocusBoard is a responsive frontend task dashboard built for the trainee assignm
 ## Features
 
 - Eight sample tasks with unique IDs and varied categories, statuses, priorities, and due dates
-- Create and edit task modal with title and due-date validation
+- Create and edit task modal with required title validation
 - Delete confirmation
 - Immediate status updates
 - Case-insensitive title search

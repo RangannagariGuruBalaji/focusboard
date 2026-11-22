@@ -21,4 +21,4 @@
 
 ## Verified or Corrected Suggestion
 
-The generated form implementation was checked for whitespace-only titles and required due dates. The submit handler was corrected to use the standard `preventDefault()` call, and the task ID is preserved when editing rather than regenerated.
+The generated form implementation was checked for whitespace-only titles. The submit handler uses `preventDefault()`, and the task ID is preserved when editing rather than regenerated. A required due-date restriction was rejected because the assignment requires title validation only.
